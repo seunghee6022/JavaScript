@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>0518 exercise & workshop</title>
+</head>
+<body>
+  <h2>Add New Todo</h2>
+  <p id='newToDo'></p>
+  <hr>
+
+  <h2>Todo List</h2>
+  <ul id='toDoList'></ul>
+  <hr>
+
+  <h2>Completed Tasks</h2>
+  <ul id='completedTasks'></ul>
+  <hr>
+
+  <script>
+   
+    const myTextList = [
+    'Django ModelForm 복습',
+    'Javascript DOM 조작 복습',
+    'Django static, media 복습'
+  ]
+    //밥상을 가져오고
+    const newToDo = document.querySelector('#newToDo')
+    const toDoList = document.querySelector('#toDoList')
+    const completedTasks = document.querySelector('#completedTasks')
+    //밥그릇을 가져와서
+    //밥을 채우고
+
+    const newToDoForm = document.createElement('form')
+
+    const newToDoLabel = document.createElement('label')
+    newToDoLabel.innerText = 'Add New Todo:'
+
+    // input tag에 타입 부여해야
+    const newToDoInput = document.createElement('input')
+    newToDoInput.type = 'text' 
+
+    const newToDoButton = document.createElement('button')
+    newToDoButton.innerText = 'Add'
+    newToDoButton.addEventListener('click',function(event){
+      alert(`${newToDoInput.value}를 입력했습니다.`)
+      event.preventDefault() //event안에서 기본기능은 submit이라 막아줘서 새로고침을 막음
+      const addNew = createTodo(newToDoInput.value)
+      toDoList.append(addNew)
+      newToDoInput.value = null
+    })
+    // newToDoForm해당 메모리의 주소값을 가리키는 참조를 하기 때문에 순서 상관 없다.
+    // 밥 그릇 위에 놓기
+    newToDoForm.append(newToDoLabel,newToDoInput,newToDoButton)
+    newToDo.append(newToDoForm)
+
+    //----------------Todo List----------------
+    
+    
+  function createTodo(labelText){
+      const toDoListForm = document.createElement('form')
+      const toDoListElement = document.createElement('li')
+
+      const modelFormCheck = document.createElement('input')
+      modelFormCheck.type = 'checkbox'
+
+      const modelFormLabel = document.createElement('label')
+      modelFormLabel.innerText = `${labelText} :`
+
+      const modelFormInput = document.createElement('input')
+      modelFormInput.type = 'text' 
+
+      const modelFormEditButton = document.createElement('button')
+      modelFormEditButton.innerText = 'Edit'
+      modelFormEditButton.addEventListener('click',function(event){
+        event.preventDefault()
+        modelFormLabel.innerText = modelFormInput.value+':'
+        modelFormInput.value = null
+
+      })
+
+      const modelFormDeleteButton = document.createElement('button')
+      modelFormDeleteButton.innerText = 'Delete'
+      modelFormDeleteButton.addEventListener('click', function(event){
+        toDoListElement.remove()
+      })
+
+      modelFormCheck.addEventListener('click',function(event){
+      console.log(event.target.checked)
+      if (event.target.checked){
+        modelFormLabel.style.textDecoration = 'line-through'
+        completedTasks.append(toDoListElement)
+      }
+      else {
+        modelFormLabel.style.textDecoration = ''
+        toDoList.append(toDoListElement)
+
+      }
+     
+    
+    })
+
+      toDoListElement.append(toDoListForm)
+      toDoListForm.append(modelFormCheck,modelFormLabel,modelFormInput,modelFormEditButton,modelFormDeleteButton
+      )
+      return toDoListElement
+  }
+
+  // const myTextList = [
+  //   'Django ModelForm 복습',
+  //   'Javascript DOM 조작 복습',
+  //   'Django static, media 복습'
+  // ]
+  myTextList.forEach(function(text){
+    console.log(text)
+    const toDoListElement = createTodo(text)
+    toDoList.append(toDoListElement)
+    
+  })
+  </script>
+</body>
+</html>
